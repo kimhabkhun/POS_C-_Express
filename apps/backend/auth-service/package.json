@@ -1,0 +1,32 @@
+{
+  "name": "auth-service",
+  "type": "commonjs",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "tsoa:gen": "tsoa spec && tsoa routes",
+    "dev": "yarn tsoa:gen && nodemon -L src/server.ts",
+    "build": "node build-script.js",
+    "db:insert": "ts-node src/database/scripts/insert-data",
+    "db:dump": "ts-node src/database/scripts/dump-data"
+  },
+  "dependencies": {
+    "@aws-sdk/client-cognito-identity-provider": "^3.699.0",
+    "@types/swagger-ui-express": "^4.1.6",
+    "axios": "^1.7.7",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "joi": "^17.13.3"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.7.5",
+    "swagger-ui-express": "^5.0.1",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "tsoa": "^6.5.0",
+    "typescript": "^5.6.3"
+  }
+}
