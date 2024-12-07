@@ -7,80 +7,115 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
-			"productType": {
+			"Production": {
 				"properties": {
+					"_id": {
+						"type": "string"
+					},
 					"name": {
+						"type": "string"
+					},
+					"category": {
 						"type": "string"
 					},
 					"price": {
 						"type": "number",
 						"format": "double"
 					},
-					"category": {
-						"type": "string"
-					},
 					"stock": {
 						"type": "number",
 						"format": "double"
+					},
+					"barcode": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
 					}
 				},
 				"required": [
 					"name",
-					"price",
 					"category",
+					"price",
 					"stock"
 				],
 				"type": "object",
 				"additionalProperties": false
 			},
-			"PaginationType": {
+			"ProductCreateRequest": {
 				"properties": {
-					"data": {
-						"items": {
-							"$ref": "#/components/schemas/productType"
-						},
-						"type": "array"
+					"name": {
+						"type": "string"
 					},
-					"total": {
+					"category": {
+						"type": "string"
+					},
+					"price": {
 						"type": "number",
 						"format": "double"
 					},
-					"currentPage": {
+					"stock": {
 						"type": "number",
 						"format": "double"
 					},
-					"totalPage": {
-						"type": "number",
-						"format": "double"
+					"barcode": {
+						"type": "string"
 					},
-					"limit": {
-						"type": "number",
-						"format": "double"
-					},
-					"skip": {
-						"type": "number",
-						"format": "double"
+					"description": {
+						"type": "string"
 					}
 				},
 				"required": [
-					"data",
-					"total",
-					"currentPage",
-					"totalPage",
-					"limit",
-					"skip"
+					"name",
+					"category",
+					"price",
+					"stock"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ProductUpdateRequest": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"category": {
+						"type": "string"
+					},
+					"price": {
+						"type": "number",
+						"format": "double"
+					},
+					"stock": {
+						"type": "number",
+						"format": "double"
+					},
+					"barcode": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"category",
+					"price",
+					"stock"
 				],
 				"type": "object",
 				"additionalProperties": false
 			},
 			"QueriesType": {
 				"properties": {
-					"filter": {
-						"type": "string"
-					},
-					"sort": {
-						"type": "string"
-					},
 					"limit": {
 						"type": "number",
 						"format": "double"
@@ -88,6 +123,15 @@
 					"page": {
 						"type": "number",
 						"format": "double"
+					},
+					"filter": {
+						"type": "string"
+					},
+					"search": {
+						"type": "string"
+					},
+					"sort": {
+						"type": "string"
 					}
 				},
 				"type": "object",
@@ -105,7 +149,50 @@
 		"contact": {}
 	},
 	"paths": {
-		"/v2/product": {
+		"/v1/product": {
+			"post": {
+				"operationId": "CreateProduct",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"data": {
+											"$ref": "#/components/schemas/Production"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"data",
+										"message"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Create Product",
+					"Product"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ProductCreateRequest"
+							}
+						}
+					}
+				}
+			},
 			"get": {
 				"operationId": "GetAllProduct",
 				"responses": {
@@ -114,33 +201,54 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/PaginationType"
+									"properties": {
+										"totalProducts": {
+											"type": "number",
+											"format": "double"
+										},
+										"skip": {
+											"type": "number",
+											"format": "double"
+										},
+										"limit": {
+											"type": "number",
+											"format": "double"
+										},
+										"totalPages": {
+											"type": "number",
+											"format": "double"
+										},
+										"currentPage": {
+											"type": "number",
+											"format": "double"
+										},
+										"data": {
+											"items": {
+												"$ref": "#/components/schemas/Production"
+											},
+											"type": "array"
+										}
+									},
+									"required": [
+										"totalProducts",
+										"skip",
+										"limit",
+										"totalPages",
+										"currentPage",
+										"data"
+									],
+									"type": "object"
 								}
 							}
 						}
 					}
 				},
 				"tags": [
-					"Get Product All"
+					"Get Product All",
+					"Product"
 				],
 				"security": [],
 				"parameters": [
-					{
-						"in": "query",
-						"name": "filter",
-						"required": false,
-						"schema": {
-							"type": "string"
-						}
-					},
-					{
-						"in": "query",
-						"name": "sort",
-						"required": false,
-						"schema": {
-							"type": "string"
-						}
-					},
 					{
 						"in": "query",
 						"name": "limit",
@@ -158,86 +266,64 @@
 							"format": "double",
 							"type": "number"
 						}
+					},
+					{
+						"in": "query",
+						"name": "filter",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "search",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "sort",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
 					}
 				]
-			},
-			"post": {
-				"operationId": "CreateProduct",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/productType"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Create new Product"
-				],
-				"security": [],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/productType"
-							}
-						}
-					}
-				}
 			}
 		},
-		"/v2/product/{id}": {
-			"get": {
-				"operationId": "GetProductById",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/productType"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Get Product By ID"
-				],
-				"security": [],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			},
+		"/v1/product/{id}": {
 			"put": {
-				"operationId": "UpdateProductById",
+				"operationId": "UpdateProduct",
 				"responses": {
 					"200": {
 						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/productType"
+									"properties": {
+										"data": {
+											"$ref": "#/components/schemas/Production"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"data",
+										"message"
+									],
+									"type": "object"
 								}
 							}
 						}
 					}
 				},
 				"tags": [
-					"Update Product By ID"
+					"Update Product",
+					"Product"
 				],
 				"security": [],
 				"parameters": [
@@ -255,21 +341,21 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/productType"
+								"$ref": "#/components/schemas/ProductUpdateRequest"
 							}
 						}
 					}
 				}
 			},
 			"delete": {
-				"operationId": "DeleteProductById",
+				"operationId": "DeleteProduct",
 				"responses": {
 					"204": {
 						"description": "No content"
 					}
 				},
 				"tags": [
-					"Delete Product By ID"
+					"Product"
 				],
 				"security": [],
 				"parameters": [
